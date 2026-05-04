@@ -2,6 +2,11 @@
   "logGroupId": "",
   "adminGroupId": "",
   "botNumber": "",
+  "logGroupId": "",
+  "adminGroupId": "",
+  "botNumber": "",
+  "mainGroupId": "",
+  "allowedGroups": [],
   "allowedStickers": [],
   "rules": {
     "TEXT_NOT_ALLOWED": {
