@@ -89,11 +89,3 @@ Sistema profissional de moderação automática para grupos de WhatsApp, com ges
 1. **Grupo de Logs** - Onde são documentadas todas as violações
 2. **Grupo de Admins** - Onde admins recebem apelações e aprovam stickers
 3. **Grupo(s) a Moderar** - O bot precisa ser ADMIN nestes grupos
-
----
-
-## 📥 Instalação
-
-### **Opção 1: Instalação Automática (Raspberry Pi)**
-
-```bash
