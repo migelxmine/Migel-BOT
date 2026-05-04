@@ -5,7 +5,7 @@
 Sistema profissional de moderação automática para grupos de WhatsApp, com gestão de regras, sistema de warnings, apelações e dashboard web.
 
 ![Status](https://img.shields.io/badge/status-active-success.svg)
-![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
+![Version](https://img.shields.io/badge/version-1.1211405.1-blue.svg)
 ![Node](https://img.shields.io/badge/node-%3E%3D20.0.0-brightgreen.svg)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
