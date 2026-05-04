@@ -454,7 +454,7 @@ async function handleAdminCommand(sock, groupId, userId, userName, text) {
                         text: `✅ Sticker aprovado de ${data.userName}`
                     });
                     return sock.sendMessage(data.userId, {
-                        text: `✅ Sticker aprovado!`
+                        text: `🦜 Prezado membro, vimos por este meio informar que o sticker por vós submetido foi devidamente analisado pela administração e mereceu aprovação favorável. A partir deste momento, encontra-se autorizado a utilizar o referido sticker no presente grupo, sem quaisquer restrições. Agradecemos o vosso respeito pelas normas estabelecidas e pela paciência demonstrada durante o processo de análise. Desejamos que continue a contribuir de forma positiva para a boa convivência neste espaço. 🦜`
                     });
                 });
                 
@@ -520,7 +520,7 @@ async function handleViolation(sock, groupId, userId, userName, userNumber, rule
     } else {
         await safeAction('Enviar warning', async () => {
             return sock.sendMessage(groupId, {
-                text: `⚠️ *AVISO ${db.warnings[userId]}/${rule.warnings}*\n\n@${userNumber}\n\n${rule.code}`,
+                text: `🦜 Prezado membro @${userNumber}, cumpre-nos informar que foi registada uma infração ao regulamento interno deste grupo, conforme especificado no artigo ${rule.code}, que estabelece o seguinte: "${rule.description}". Em conformidade com o sistema disciplinar em vigor, a presente comunicação constitui a ${db.warnings[userId] === 1 ? 'primeira' : 'segunda'} advertência formal que lhe é dirigida. Importa salientar que, nos termos do Artigo 5.1 do regulamento, o incumprimento reiterado das normas estabelecidas resultará na aplicação de sanções, podendo culminar na vossa remoção do grupo. ${db.warnings[userId] === rule.warnings - 1 ? 'Alertamos que se encontra no limite de advertências permitidas, pelo que qualquer nova violação acarretará a imediata expulsão do grupo.' : ''} Solicitamos que tome conhecimento da gravidade da situação e que, doravante, passe a observar rigorosamente todas as disposições regulamentares. Agradecemos a vossa atenção e esperamos não ter de voltar a dirigir-vos qualquer comunicação desta natureza. 🦜`,
                 mentions: [userId]
             });
         });
@@ -547,8 +547,7 @@ async function banUser(sock, groupId, userId, userName, userNumber, rule, eviden
     
     await safeAction('Anunciar ban', async () => {
         return sock.sendMessage(groupId, {
-            text: `🚫 *@${userNumber} BANIDO*\n\n📜 ${rule.code}`,
-            mentions: [userId]
+           text: `🦜 Prezados membros, vimos por este meio comunicar que o utilizador @${userNumber} foi objeto de remoção do presente grupo, em consequência do incumprimento do disposto no ${rule.code} do regulamento interno, o qual estabelece que "${rule.description}". Conforme previsto no Artigo 5.1, que estipula que "o incumprimento das regras resulta em ban", a decisão foi tomada de forma automática pelo sistema de moderação, após constatação inequívoca da infração. Esta medida visa preservar a ordem, o respeito mútuo e o cumprimento das normas que regem este espaço. Reiteramos a todos os membros a importância de observarem escrupulosamente o regulamento estabelecido, a fim de evitarem situações idênticas. Agradecemos a vossa compreensão e colaboração. 🦜`,
         });
     });
     
