@@ -82,7 +82,7 @@ async function startBot() {
             if (rulesText) {
                 await safeAction('Boas-vindas', async () => {
                     return sock.sendMessage(id, {
-                        text: `📜 *BEM-VINDO!*\n\n*REGRAS:*\n${rulesText}\n\n🤖 Grupo com moderação automática.`,
+                        text: `🦜 Prezado membro, seja muito bem-vindo ao presente grupo. No âmbito da manutenção da ordem e do cumprimento das normas estabelecidas, informamos que este espaço é supervisionado por um sistema automatizado de moderação. Solicitamos a vossa atenção para o regulamento interno, cujos artigos se encontram discriminados de seguida. O incumprimento das referidas disposições resultará na aplicação de sanções, incluindo advertências formais e, em casos reincidentes ou de maior gravidade, a remoção imediata do grupo. Agradecemos antecipadamente a vossa colaboração e desejamos uma participação construtiva e respeitosa.\n\n*REGULAMENTO INTERNO:*\n${rulesText}\n\n🦜`,
                         mentions: participants
                     });
                 });
@@ -152,7 +152,7 @@ async function startBot() {
                 await safeAction('Apagar sticker', async () => {
                     await sock.sendMessage(groupId, { delete: msg.key });
                     return sock.sendMessage(groupId, {
-                        text: `⏳ @${userNumber}, sticker a aguardar aprovação.`,
+                        text: `🦜 Prezado membro @${userNumber}, informamos que o sticker por vós submetido se encontra neste momento sob análise pela administração deste grupo. Até à conclusão do processo de aprovação, o referido conteúdo permanecerá temporariamente indisponível. Solicitamos a vossa compreensão e paciência enquanto os responsáveis procedem à devida avaliação, tendo em conta os critérios de adequação e conformidade com as normas vigentes no presente espaço. Ser-vos-á comunicada a decisão final assim que a análise estiver concluída. Agradecemos a vossa colaboração. 🦜`,
                         mentions: [userId]
                     });
                 });
