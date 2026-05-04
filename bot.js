@@ -490,7 +490,7 @@ async function handleAdminCommand(sock, groupId, userId, userName, text) {
                 
                 await safeAction('Ban por sticker', async () => {
                     return sock.sendMessage(groupId, {
-                        text: `🚫 ${data.userName} banido.`
+                        text: `🦜 Informa-se que o utilizador ${data.userName} foi objeto de expulsão imediata do grupo, em consequência da submissão de conteúdo inapropriado. A decisão foi executada em conformidade com o disposto no regulamento interno. 🦜`
                     });
                 });
                 
