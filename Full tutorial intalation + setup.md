@@ -1,6 +1,6 @@
 # GUIA SETUP (SERVER/BOT) - DO ZERO ABSOLUTO
 
-Vou guiar-te como se nunca tivesses tocado num computador! 👶
+Vou guiar-te como se nunca tivesses tocado num computador! 
 
 ---
 
