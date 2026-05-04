@@ -1409,4 +1409,4 @@ nano config.json
 
 ---
 
-**Algum erro? Manda print do erro e ajudo-te! 🚀**
+**Algum erro? Contacte migelxdev**
