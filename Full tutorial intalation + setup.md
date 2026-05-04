@@ -430,7 +430,7 @@ async function startBot() {
             if (rulesText) {
                 await safeAction('Boas-vindas', async () => {
                     return sock.sendMessage(id, {
-                        text: `📜 *BEM-VINDO!*\n\n*REGRAS:*\n${rulesText}\n\n🤖 Grupo com moderação automática.`,
+                        text: `🦜 Prezado membro, seja muito bem-vindo ao presente grupo. No âmbito da manutenção da ordem e do cumprimento das normas estabelecidas, informamos que este espaço é supervisionado por um sistema automatizado de moderação. Solicitamos a vossa atenção para o regulamento interno, cujos artigos se encontram discriminados de seguida. O incumprimento das referidas disposições resultará na aplicação de sanções, incluindo advertências formais e, em casos reincidentes ou de maior gravidade, a remoção imediata do grupo. Agradecemos antecipadamente a vossa colaboração e desejamos uma participação construtiva e respeitosa.\n\n*REGULAMENTO INTERNO:*\n${rulesText}\n\n🦜`,
                         mentions: participants
                     });
                 });
@@ -500,7 +500,7 @@ async function startBot() {
                 await safeAction('Apagar sticker', async () => {
                     await sock.sendMessage(groupId, { delete: msg.key });
                     return sock.sendMessage(groupId, {
-                        text: `⏳ @${userNumber}, sticker a aguardar aprovação.`,
+                        text: `🦜 Prezado membro @${userNumber}, informamos que o sticker por vós submetido se encontra neste momento sob análise pela administração deste grupo. Até à conclusão do processo de aprovação, o referido conteúdo permanecerá temporariamente indisponível. Solicitamos a vossa compreensão e paciência enquanto os responsáveis procedem à devida avaliação, tendo em conta os critérios de adequação e conformidade com as normas vigentes no presente espaço. Ser-vos-á comunicada a decisão final assim que a análise estiver concluída. Agradecemos a vossa colaboração. 🦜`,
                         mentions: [userId]
                     });
                 });
@@ -620,10 +620,10 @@ async function handlePrivateMessage(sock, msg, userId, userName, userNumber) {
         
         await safeAction('Encaminhar msg admin→banido', async () => {
             await sock.sendMessage(bannedUserId, {
-                text: `💬 *Admin:*\n\n${text}`
+                text: `🦜 Mensagem recebida da administração do grupo:\n\n${text}\n\n🦜`
             });
             return sock.sendMessage(userId, {
-                text: `✅ Enviado. !encerrar para terminar.`
+                text: `🦜 A vossa mensagem foi devidamente encaminhada para o utilizador. Para encerrar a presente comunicação, utilize o comando !encerrar. 🦜`
             });
         });
         
@@ -637,10 +637,10 @@ async function handlePrivateMessage(sock, msg, userId, userName, userNumber) {
     if (adminInConversation) {
         await safeAction('Encaminhar msg banido→admin', async () => {
             await sock.sendMessage(adminInConversation, {
-                text: `💬 *Banido (+${userNumber}):*\n\n${text}`
+                text: `🦜 Mensagem recebida do utilizador banido (+${userNumber}):\n\n${text}\n\n🦜`
             });
             return sock.sendMessage(userId, {
-                text: `✅ Enviado para admin.`
+                text: `🦜 A vossa mensagem foi devidamente encaminhada para o administrador responsável pela análise da vossa apelação. Aguarde resposta. 🦜`
             });
         });
         
@@ -652,7 +652,7 @@ async function handlePrivateMessage(sock, msg, userId, userName, userNumber) {
     if (!banInfo) {
         await safeAction('Msg boas-vindas DM', async () => {
             return sock.sendMessage(userId, {
-                text: `👋 Olá! Sou o bot de moderação.`
+                text: `🦜 Prezado utilizador, seja bem-vindo ao sistema automatizado de moderação. O presente serviço foi concebido para assegurar o cumprimento das normas estabelecidas nos grupos geridos por esta plataforma. Caso tenha sido objeto de alguma medida disciplinar, ser-lhe-ão fornecidas todas as informações e instruções necessárias de forma automática. Agradecemos a vossa atenção. 🦜`
             });
         });
         return;
@@ -674,7 +674,7 @@ async function handlePrivateMessage(sock, msg, userId, userName, userNumber) {
         
         await safeAction('Confirmar apelação', async () => {
             return sock.sendMessage(userId, {
-                text: `✅ *Apelação recebida!*\n\nBanido por: ${banInfo.rule.code}\n\n⏳ Aguarda.`
+                text: `🦜 Prezado utilizador, acusamos a recepção da vossa apelação relativamente à decisão de remoção do grupo, fundamentada na violação do ${banInfo.rule.code} do regulamento interno. Informamos que o vosso pedido de revisão foi devidamente registado no sistema e encontra-se neste momento pendente de análise por parte da administração do grupo. Os responsáveis irão proceder à avaliação criteriosa dos argumentos por vós apresentados, à luz das circunstâncias concretas da infração e do historial de participação no grupo. Solicitamos que aguarde pacientemente pela resposta, a qual será comunicada assim que a administração conclua a sua deliberação. Agradecemos a vossa compreensão e reiteramos o nosso compromisso com a aplicação justa e equitativa das normas estabelecidas. 🦜`
             });
         });
         
@@ -692,7 +692,7 @@ async function handlePrivateMessage(sock, msg, userId, userName, userNumber) {
 async function notifyAdminsOfAppeal(sock, userId, userName, userNumber, banInfo, appealText) {
     if (!config.adminGroupId) return;
     
-    const appealMsg = `🔔 *APELAÇÃO*\n\n👤 ${userName} (+${userNumber})\n📜 ${banInfo.rule.code}\n💬 "${appealText}"\n\n!atender ${userNumber}`;
+    const appealMsg = `🦜 Prezados administradores, cumpre-nos informar que foi submetida uma apelação por parte do utilizador ${userName}, portador do número de contacto +${userNumber}, relativamente à decisão de expulsão do grupo motivada pela infração ao ${banInfo.rule.code} do regulamento interno. O utilizador em causa apresentou os seguintes argumentos em sua defesa: "${appealText}". A apelação encontra-se registada no sistema com a data de ${new Date(banInfo.timestamp).toLocaleString('pt-PT', { timeZone: 'Europe/Lisbon', dateStyle: 'full', timeStyle: 'long' })} e aguarda deliberação por parte da administração. Caso algum dos responsáveis deseje assumir a condução do processo de análise e estabelecer comunicação direta com o apelante, deverá utilizar o comando !atender ${userNumber} para iniciar o diálogo. Agradecemos a vossa atenção e disponibilidade para a resolução desta questão. 🦜`;
     
     await safeAction('Notificar apelação', async () => {
         return sock.sendMessage(config.adminGroupId, { text: appealMsg });
@@ -765,10 +765,10 @@ async function handleAdminCommand(sock, groupId, userId, userName, text) {
                     
                     await safeAction('Iniciar conversa admin-banido', async () => {
                         await sock.sendMessage(userId, {
-                            text: `✅ Conversa com +${bannedNumber}\n\n!encerrar para terminar.`
+                            text: `🦜 Prezado administrador, informamos que foi estabelecida com sucesso a ligação de comunicação direta com o utilizador +${bannedNumber}, que se encontra a aguardar a análise da sua apelação. A partir deste momento, todas as mensagens que dirigir ao presente sistema serão automaticamente encaminhadas para o utilizador em questão, permitindo-lhe conduzir o diálogo de forma privada e confidencial. Quando pretender encerrar a comunicação, deverá utilizar o comando !encerrar. Agradecemos o vosso empenho na resolução justa e ponderada desta situação. 🦜`
                         });
                         return sock.sendMessage(bannedUserId, {
-                            text: `✅ Admin aceitou apelação!`
+                            text: `🦜 Prezado utilizador, temos o prazer de informar que um membro da administração do grupo aceitou proceder à análise da vossa apelação e encontra-se disponível para estabelecer um diálogo direto convosco. A partir deste momento, poderá expor de forma mais detalhada as vossas razões e esclarecer quaisquer dúvidas ou mal-entendidos relativos à situação que motivou a vossa expulsão. Todas as mensagens que enviar ao presente sistema serão encaminhadas para o administrador responsável, que responderá às vossas questões e deliberará sobre a eventual revisão da decisão. Solicitamos que mantenha um tom respeitoso e construtivo ao longo de todo o processo. Agradecemos a vossa colaboração. 🦜`
                         });
                     });
                 }
@@ -799,10 +799,10 @@ async function handleAdminCommand(sock, groupId, userId, userName, text) {
                 
                 await safeAction('Aprovar sticker', async () => {
                     await sock.sendMessage(groupId, {
-                        text: `✅ Sticker aprovado de ${data.userName}`
+                        text: `🦜 Informa-se que o sticker submetido pelo membro ${data.userName} foi analisado e mereceu aprovação. O referido conteúdo foi adicionado à lista de stickers autorizados. 🦜`
                     });
                     return sock.sendMessage(data.userId, {
-                        text: `✅ Sticker aprovado!`
+                        text: `🦜 Prezado membro, vimos por este meio informar que o sticker por vós submetido foi devidamente analisado pela administração e mereceu aprovação favorável. A partir deste momento, encontra-se autorizado a utilizar o referido sticker no presente grupo, sem quaisquer restrições. Agradecemos o vosso respeito pelas normas estabelecidas e pela paciência demonstrada durante o processo de análise. Desejamos que continue a contribuir de forma positiva para a boa convivência neste espaço. 🦜`
                     });
                 });
                 
@@ -820,7 +820,7 @@ async function handleAdminCommand(sock, groupId, userId, userName, text) {
                 
                 await safeAction('Rejeitar sticker', async () => {
                     return sock.sendMessage(groupId, {
-                        text: `❌ Sticker rejeitado. Warning para ${data.userName}`
+                        text: `🦜 Informa-se que o sticker submetido pelo membro ${data.userName} foi analisado e não mereceu aprovação, tendo sido rejeitado. Foi registada uma advertência formal no sistema disciplinar do utilizador em conformidade com o regulamento. 🦜`
                     });
                 });
                 
@@ -838,7 +838,7 @@ async function handleAdminCommand(sock, groupId, userId, userName, text) {
                 
                 await safeAction('Ban por sticker', async () => {
                     return sock.sendMessage(groupId, {
-                        text: `🚫 ${data.userName} banido.`
+                        text: `🦜 Informa-se que o utilizador ${data.userName} foi objeto de expulsão imediata do grupo, em consequência da submissão de conteúdo inapropriado. A decisão foi executada em conformidade com o disposto no regulamento interno. 🦜`
                     });
                 });
                 
@@ -868,7 +868,7 @@ async function handleViolation(sock, groupId, userId, userName, userNumber, rule
     } else {
         await safeAction('Enviar warning', async () => {
             return sock.sendMessage(groupId, {
-                text: `⚠️ *AVISO ${db.warnings[userId]}/${rule.warnings}*\n\n@${userNumber}\n\n${rule.code}`,
+                text: `🦜 Prezado membro @${userNumber}, cumpre-nos informar que foi registada uma infração ao regulamento interno deste grupo, conforme especificado no artigo ${rule.code}, que estabelece o seguinte: "${rule.description}". Em conformidade com o sistema disciplinar em vigor, a presente comunicação constitui a ${db.warnings[userId] === 1 ? 'primeira' : 'segunda'} advertência formal que lhe é dirigida. Importa salientar que, nos termos do Artigo 5.1 do regulamento, o incumprimento reiterado das normas estabelecidas resultará na aplicação de sanções, podendo culminar na vossa remoção do grupo. ${db.warnings[userId] === rule.warnings - 1 ? 'Alertamos que se encontra no limite de advertências permitidas, pelo que qualquer nova violação acarretará a imediata expulsão do grupo.' : ''} Solicitamos que tome conhecimento da gravidade da situação e que, doravante, passe a observar rigorosamente todas as disposições regulamentares. Agradecemos a vossa atenção e esperamos não ter de voltar a dirigir-vos qualquer comunicação desta natureza. 🦜`,
                 mentions: [userId]
             });
         });
@@ -895,8 +895,7 @@ async function banUser(sock, groupId, userId, userName, userNumber, rule, eviden
     
     await safeAction('Anunciar ban', async () => {
         return sock.sendMessage(groupId, {
-            text: `🚫 *@${userNumber} BANIDO*\n\n📜 ${rule.code}`,
-            mentions: [userId]
+           text: `🦜 Prezados membros, vimos por este meio comunicar que o utilizador @${userNumber} foi objeto de remoção do presente grupo, em consequência do incumprimento do disposto no ${rule.code} do regulamento interno, o qual estabelece que "${rule.description}". Conforme previsto no Artigo 5.1, que estipula que "o incumprimento das regras resulta em ban", a decisão foi tomada de forma automática pelo sistema de moderação, após constatação inequívoca da infração. Esta medida visa preservar a ordem, o respeito mútuo e o cumprimento das normas que regem este espaço. Reiteramos a todos os membros a importância de observarem escrupulosamente o regulamento estabelecido, a fim de evitarem situações idênticas. Agradecemos a vossa compreensão e colaboração. 🦜`,
         });
     });
     
@@ -918,8 +917,8 @@ async function sendBanNotification(sock, userId, userName, userNumber, rule, evi
         groupName = groupMeta.subject;
     } catch (e) {}
     
-    const notification = `🚫 *BANIDO*\n\n👤 ${userName}\n📱 +${userNumber}\n🏠 ${groupName}\n\n⚖️ ${rule.code}\n${rule.description}\n\n💬 ${evidence || '[Mídia]'}\n\n🕐 ${new Date().toLocaleString('pt-PT')}\n\n📮 Responde para apelar.`;
-    
+    const notification = `🦜 Prezado utilizador ${userName}, vimos por este meio notificá-lo formalmente de que foi objeto de remoção do grupo "${groupName}", em consequência do incumprimento do regulamento interno que rege o referido espaço. A presente decisão fundamenta-se na violação do ${rule.code}, que estabelece expressamente o seguinte: "${rule.description}". De acordo com o sistema disciplinar em vigor, conforme previsto no Artigo 5.1 do regulamento, que estipula que "o incumprimento das regras resulta em ban", a medida de expulsão foi aplicada de forma automática pelo sistema de moderação.\n\n*DADOS DA OCORRÊNCIA:*\nNome do utilizador: ${userName}\nNúmero de contacto: +${userNumber}\nGrupo de origem: ${groupName}\nArtigo infringido: ${rule.code} - ${rule.description}\nEvidência registada: ${evidence || 'Conteúdo multimédia anexado ao processo'}\nData e hora da infração: ${new Date().toLocaleString('pt-PT', { timeZone: 'Europe/Lisbon', dateStyle: 'full', timeStyle: 'long' })}\n\n*DIREITO DE APELAÇÃO:*\nCaso entenda que a decisão ora comunicada foi tomada de forma injusta ou que existem circunstâncias atenuantes que não foram devidamente consideradas, fica salvaguardado o vosso direito de apresentar uma apelação. Para tal, deverá responder à presente mensagem, expondo de forma clara e fundamentada as razões pelas quais considera que a sanção não deveria ter sido aplicada. A vossa apelação será encaminhada para a administração do grupo, que procederá à sua análise e deliberará sobre a eventual revisão da decisão. Alertamos que apelações infundadas, ofensivas ou que não respeitem o devido decoro poderão resultar em sanções adicionais, incluindo a impossibilidade de readmissão no grupo em causa. Agradecemos a vossa atenção e compreensão relativamente à aplicação das normas estabelecidas. 🦜`;
+   
     try {
         await safeAction('Enviar DM ban', async () => {
             return sock.sendMessage(userId, { text: notification });
