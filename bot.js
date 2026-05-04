@@ -106,7 +106,19 @@ async function startBot() {
         }
         
         const groupId = msg.key.remoteJid;
-        const text = msg.message.conversation || msg.message.extendedTextMessage?.text || '';
+
+// ===== FILTRO DE GRUPOS - SÓ MODERAR GRUPOS PERMITIDOS =====
+if (config.mainGroupId && groupId !== config.mainGroupId) {
+    return; // Ignora grupos que não sejam o principal
+}
+
+if (config.allowedGroups && config.allowedGroups.length > 0 && !config.allowedGroups.includes(groupId)) {
+    return; // Ignora grupos que não estejam na lista
+}
+// ============================================================
+
+const text = msg.message.conversation || msg.message.extendedTextMessage?.text || '';
+    
         
         const isAdmin = await checkAdmin(sock, groupId, userId);
         
@@ -497,6 +509,103 @@ async function handleAdminCommand(sock, groupId, userId, userName, text) {
                 delete pendingStickers[args[1]];
             }
             break;
+
+            case '!ban':
+            // ... código existente do !ban ...
+            break;
+            
+        // ===== NOVO COMANDO: DEFINIR GRUPO PRINCIPAL =====
+        case '!setmain':
+            config.mainGroupId = groupId;
+            config.allowedGroups = []; // Limpa lista se existir
+            saveConfig();
+            
+            let groupName = 'este grupo';
+            try {
+                const groupMeta = await sock.groupMetadata(groupId);
+                groupName = groupMeta.subject;
+            } catch (e) {}
+            
+            await safeAction('Definir grupo principal', async () => {
+                return sock.sendMessage(groupId, {
+                    text: `🦜 Prezados administradores, informamos que o grupo "${groupName}" foi formalmente registado como grupo principal para efeitos de moderação automatizada. A partir deste momento, o sistema de moderação encontra-se ativo e operacional exclusivamente neste espaço, ignorando quaisquer outros grupos nos quais o bot possa estar presente. Agradecemos a vossa atenção. 🦜`
+                });
+            });
+            break;
+            
+        case '!addgroup':
+            // Adiciona grupo atual à lista de permitidos
+            if (!config.allowedGroups) {
+                config.allowedGroups = [];
+            }
+            
+            if (!config.allowedGroups.includes(groupId)) {
+                config.allowedGroups.push(groupId);
+                config.mainGroupId = ''; // Limpa mainGroupId se existir
+                saveConfig();
+                
+                await safeAction('Adicionar à lista', async () => {
+                    return sock.sendMessage(groupId, {
+                        text: `🦜 Prezados administradores, informamos que este grupo foi adicionado à lista de grupos sob moderação ativa. O sistema encontra-se agora operacional neste espaço. Total de grupos moderados: ${config.allowedGroups.length}. 🦜`
+                    });
+                });
+            } else {
+                await sock.sendMessage(groupId, {
+                    text: `🦜 Este grupo já se encontra registado na lista de moderação. 🦜`
+                });
+            }
+            break;
+            
+        case '!removegroup':
+            // Remove grupo atual da lista
+            if (config.allowedGroups && config.allowedGroups.includes(groupId)) {
+                config.allowedGroups = config.allowedGroups.filter(id => id !== groupId);
+                saveConfig();
+                
+                await safeAction('Remover da lista', async () => {
+                    return sock.sendMessage(groupId, {
+                        text: `🦜 Prezados administradores, informamos que este grupo foi removido da lista de moderação ativa. O bot continuará presente mas não atuará sobre violações. 🦜`
+                    });
+                });
+            } else {
+                await sock.sendMessage(groupId, {
+                    text: `🦜 Este grupo não se encontra na lista de moderação. 🦜`
+                });
+            }
+            break;
+            
+        case '!listgroups':
+            // Mostra grupos moderados
+            let groupsList = '🦜 *GRUPOS SOB MODERAÇÃO:*\n\n';
+            
+            if (config.mainGroupId) {
+                try {
+                    const meta = await sock.groupMetadata(config.mainGroupId);
+                    groupsList += `📍 Grupo principal: ${meta.subject}\n`;
+                } catch (e) {
+                    groupsList += `📍 Grupo principal: ${config.mainGroupId}\n`;
+                }
+            } else if (config.allowedGroups && config.allowedGroups.length > 0) {
+                for (const gid of config.allowedGroups) {
+                    try {
+                        const meta = await sock.groupMetadata(gid);
+                        groupsList += `• ${meta.subject}\n`;
+                    } catch (e) {
+                        groupsList += `• ${gid}\n`;
+                    }
+                }
+            } else {
+                groupsList += 'Nenhum grupo configurado (moderação ativa em TODOS os grupos).\n';
+            }
+            
+            groupsList += '\n🦜';
+            
+            await safeAction('Listar grupos', async () => {
+                return sock.sendMessage(groupId, { text: groupsList });
+            });
+            break;
+    }
+}m
     }
 }
 
