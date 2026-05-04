@@ -1,4 +1,4 @@
-# 🍼 GUIA PARA BEBÉS - DO ZERO ABSOLUTO
+# GUIA SETUP (SERVER/BOT) - DO ZERO ABSOLUTO
 
 Vou guiar-te como se nunca tivesses tocado num computador! 👶
 
@@ -226,7 +226,7 @@ nano package.json
 ```json
 {
   "name": "whatsapp-moderator-bot",
-  "version": "1.0.0",
+  "version": "1.1211405.1",
   "description": "Bot de moderação WhatsApp",
   "main": "bot.js",
   "scripts": {
