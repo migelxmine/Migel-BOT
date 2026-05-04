@@ -1,0 +1,41 @@
+{
+  "logGroupId": "",
+  "adminGroupId": "",
+  "botNumber": "",
+  "allowedStickers": [],
+  "rules": {
+    "TEXT_NOT_ALLOWED": {
+      "code": "Art. 1.3",
+      "description": "Texto não é permitido",
+      "warnings": 1,
+      "enabled": false
+    },
+    "STICKER_WITHOUT_WHISTLE": {
+      "code": "Art. 1.2",
+      "description": "Stickers apenas se forem relacionados com assobios",
+      "warnings": 1,
+      "enabled": false
+    },
+    "ADULT_CONTENT": {
+      "code": "Art. 2.2",
+      "description": "Conteúdo adulto - BAN DIRETO",
+      "warnings": 0,
+      "enabled": false
+    },
+    "DISRESPECT": {
+      "code": "Art. 3.1",
+      "description": "Falta de respeito entre membros",
+      "warnings": 1,
+      "enabled": false
+    },
+    "SPAM": {
+      "code": "Art. 3.2",
+      "description": "Spam não é permitido",
+      "warnings": 1,
+      "enabled": false
+    }
+  },
+  "disrespectfulWords": ["idiota", "estúpido", "burro", "palhaço"],
+  "spamLimit": 5,
+  "spamTimeWindow": 60000
+}
